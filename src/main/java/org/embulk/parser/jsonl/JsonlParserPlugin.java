@@ -77,6 +77,10 @@ public class JsonlParserPlugin
         @ConfigDefault("{}")
         @Deprecated
         Map<String, JsonlColumnOption> getColumnOptions();
+
+        @Config("null_string")
+        @ConfigDefault("null")
+        Optional<String> getNullString();
     }
 
     private final Logger log;

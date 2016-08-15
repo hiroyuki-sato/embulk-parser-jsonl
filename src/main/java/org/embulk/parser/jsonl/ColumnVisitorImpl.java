@@ -127,10 +127,20 @@ public class ColumnVisitorImpl implements ColumnVisitor {
     @Override
     public void timestampColumn(Column column)
     {
+
+
         if (isNil(value)) {
             pageBuilder.setNull(column);
+            return;
         }
-        else {
+
+
+        String string = autoTypecasts[column.getIndex()] ? ColumnCaster.asString(value) : value.asStringValue().toString();
+        String nullStringOrNull = task.getNullString().orNull();
+
+        if( nullStringOrNull != null && nullStringOrNull.equals(string)) {
+            pageBuilder.setNull(column);
+        } else {
             try {
                 Timestamp timestamp = ColumnCaster.asTimestamp(value, timestampParsers[column.getIndex()]);
                 pageBuilder.setTimestamp(column, timestamp);
